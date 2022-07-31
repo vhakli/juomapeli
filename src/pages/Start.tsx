@@ -25,8 +25,8 @@ export const StartPage = () => {
   const buttonTitle = enabled ? "Aloita peli" : "Lisää vähintään 2 pelaajaa";
 
   return (
-    <>
-      <div className="flex mt-10 space-x-4">
+    <div className="mt-10 px-4 text-center">
+      <div className="flex space-x-4">
         <button
           title={buttonTitle}
           disabled={!enabled}
@@ -90,6 +90,6 @@ export const StartPage = () => {
           )}
         </tbody>
       </table>
-    </>
+    </div>
   );
 };
