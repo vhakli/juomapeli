@@ -26,7 +26,7 @@ export const StartPage = () => {
 
   return (
     <div className="mt-10 px-4 text-center">
-      <div className="flex space-x-4">
+      <div className="flex justify-center space-x-4">
         <button
           title={buttonTitle}
           disabled={!enabled}
@@ -69,12 +69,12 @@ export const StartPage = () => {
         </Button>
       </form>
       <h2 className="text-xl font-bold mt-12">Lisätyt pelaajat</h2>
-      <table className="border-separate border-spacing-1">
+      <table className="border-separate border-spacing-1 m-auto">
         <tbody>
           {_.reverse(
             players.map((player) => (
               <tr key={player.id}>
-                <td className="border border-slate-600 px-4 py-2 text-center">
+                <td className="border border-slate-600 px-4 py-2 text-center break-all">
                   {player.name}
                 </td>
                 <td className="border border-slate-600 p-2 bg-red-700">
