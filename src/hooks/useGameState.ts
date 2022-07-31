@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { GameState, GameStateContext } from "../context/GameState";
+import { GameState, GameStateContext, Player } from "../context/GameState";
+import { v4 as uuidv4 } from "uuid";
 import _ from "lodash";
 
 /**
@@ -25,15 +26,12 @@ export const useGameState = () => {
     if (data) {
       try {
         const gameData = JSON.parse(atob(data));
-        console.log("gameData", gameData);
-        if (!gameState.turn.player) {
+        if (gameData.started) {
           setGameState(gameData);
         }
       } catch (e) {
         navigate("/");
       }
-    } else {
-      navigate("/");
     }
   }, [data]);
 
@@ -42,10 +40,10 @@ export const useGameState = () => {
       const players = shuffle
         ? _.shuffle(gameState.players)
         : gameState.players;
-
-      const startedGameState: GameState = {
+      const newGameState: GameState = {
         ...gameState,
         players,
+        started: true,
         round: {
           number: 1,
         },
@@ -55,7 +53,13 @@ export const useGameState = () => {
           player: players[0],
         },
       };
-      updateState(startedGameState);
+      updateState(newGameState);
+    }
+  };
+
+  const continueGame = () => {
+    if (enabled) {
+      updateState(gameState);
     }
   };
 
@@ -89,11 +93,36 @@ export const useGameState = () => {
     updateState(loadingState);
   };
 
+  // Helper function to add new player to the game
+  const addPlayer = (name: string) => {
+    const newPlayer: Player = {
+      id: uuidv4(),
+      name,
+    };
+    setGameState({
+      ...gameState,
+      players: [...gameState.players, newPlayer],
+    });
+  };
+
+  // Helper function to remove player from the game
+  const removePlayer = (id: string) => {
+    setGameState({
+      ...gameState,
+      players: gameState.players.filter((player) => player.id !== id),
+    });
+  };
+
   return {
-    enabled,
     startGame,
+    continueGame,
     endTurn,
     setLoadingState,
+    addPlayer,
+    removePlayer,
+    enabled,
+    started: gameState.started,
+    players: gameState.players,
     turn: gameState.turn,
     round: gameState.round,
   };

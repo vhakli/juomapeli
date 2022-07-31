@@ -2,6 +2,7 @@ import { createContext } from "react";
 
 export interface GameState {
   players: Player[];
+  started: boolean;
   round: {
     number: number;
   };
@@ -22,17 +23,6 @@ export interface IGameStateContext {
   setGameState: React.Dispatch<React.SetStateAction<GameState>>;
 }
 
-export const initialState: GameState = {
-  players: [],
-  round: {
-    number: 0,
-  },
-  turn: {
-    number: 0,
-    loading: false,
-    player: undefined,
-  },
-};
 // eslint-disable-next-line
 export const GameStateContext = createContext<IGameStateContext>(null as any);
 export const GameStateProvider = GameStateContext.Provider;

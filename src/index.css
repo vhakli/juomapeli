@@ -7,5 +7,7 @@ body,
 #root {
   width: 100%;
   height: 100%;
+  --tw-bg-opacity: 1;
+  background-color: rgb(30 41 59 / var(--tw-bg-opacity));
   color: white;
 }

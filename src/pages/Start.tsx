@@ -1,11 +1,18 @@
 import { useState } from "react";
 import { Button } from "../components/Button";
 import { useGameState } from "../hooks/useGameState";
-import { usePlayers } from "../hooks/usePlayers";
+import _ from "lodash";
 
 export const StartPage = () => {
-  const { enabled, startGame } = useGameState();
-  const { addPlayer, removePlayer, players } = usePlayers();
+  const {
+    enabled,
+    started,
+    startGame,
+    players,
+    addPlayer,
+    removePlayer,
+    continueGame,
+  } = useGameState();
   const [playerName, setPlayerName] = useState("");
   const [shuffle, setShuffle] = useState<boolean>(true);
 
@@ -15,20 +22,29 @@ export const StartPage = () => {
     setPlayerName("");
   };
 
+  const buttonTitle = enabled ? "Aloita peli" : "Lisää vähintään 2 pelaajaa";
+
   return (
     <>
-      <button
-        title={enabled ? "Start game" : "Add at least 2 players"}
-        className={`mt-10 h-24 p-6 rounded ${
-          enabled
-            ? "bg-green-900 hover:bg-green-800"
-            : "bg-slate-500 cursor-not-allowed"
-        }`}
-        onClick={() => startGame(shuffle)}
-      >
-        {enabled ? "Aloita" : "Lisää vähintään 2 pelaajaa"}
-      </button>
-      <div className="p-4">
+      <div className="flex mt-10 space-x-4">
+        <button
+          title={buttonTitle}
+          disabled={!enabled}
+          className="h-24 p-6 rounded disabled:bg-slate-500 disabled:cursor-not-allowed bg-green-900 hover:bg-green-800"
+          onClick={() => startGame(shuffle)}
+        >
+          {buttonTitle}
+        </button>
+        {started && (
+          <button
+            className="bg-cyan-700 hover:bg-cyan-600 p-6 rounded"
+            onClick={() => continueGame()}
+          >
+            Jatka peliä
+          </button>
+        )}
+      </div>
+      <div className="p-2">
         <input
           type="checkbox"
           checked={shuffle}
@@ -38,10 +54,10 @@ export const StartPage = () => {
         />
         <label htmlFor="shuffle">Satunnainen pelijärjestys</label>
       </div>
-      <h2 className="text-xl font-bold">Lisää pelaaja</h2>
+      <h2 className="text-xl font-bold mt-6">Lisää pelaaja</h2>
       <form onSubmit={onSubmit}>
         <input
-          className="text-black h-9 p-2 mr-2 rounded-sm"
+          className="text-black h-9 p-2 mr-2 mt-4 rounded-sm"
           type="text"
           autoFocus
           placeholder="Nimi"
@@ -52,24 +68,26 @@ export const StartPage = () => {
           Lisää
         </Button>
       </form>
-      <h2 className="text-xl font-bold mt-4">Lisätyt pelaajat</h2>
+      <h2 className="text-xl font-bold mt-12">Lisätyt pelaajat</h2>
       <table className="border-separate border-spacing-1">
         <tbody>
-          {players.map((player) => (
-            <tr key={player.id}>
-              <td className="border border-slate-600 px-4 py-2 text-center">
-                {player.name}
-              </td>
-              <td className="border border-slate-600 p-2 bg-red-700">
-                <button
-                  className="px-1"
-                  onClick={() => removePlayer(player.id)}
-                >
-                  Poista
-                </button>
-              </td>
-            </tr>
-          ))}
+          {_.reverse(
+            players.map((player) => (
+              <tr key={player.id}>
+                <td className="border border-slate-600 px-4 py-2 text-center">
+                  {player.name}
+                </td>
+                <td className="border border-slate-600 p-2 bg-red-700">
+                  <button
+                    className="px-1"
+                    onClick={() => removePlayer(player.id)}
+                  >
+                    Poista
+                  </button>
+                </td>
+              </tr>
+            ))
+          )}
         </tbody>
       </table>
     </>
