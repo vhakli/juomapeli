@@ -4,7 +4,7 @@ import { GameState, GameStateProvider } from "../context/GameState";
 import { tasks } from "../data/tasks";
 import { useGameStateContext } from "../hooks/useGameStateContext";
 
-import { author } from "../../package.json";
+import { author, repository } from "../../package.json";
 import { Button } from "./Button";
 
 export const Layout = () => {
@@ -22,7 +22,7 @@ export const Layout = () => {
       <GameStateProvider value={{ gameState, setGameState }}>
         <Outlet />
       </GameStateProvider>
-      <div className="mt-auto mb-4 flex space-x-4 text-gray-500">
+      <div className="mt-auto mb-4 flex flex-col md:flex-row md:space-x-8 text-gray-500 text-center">
         <button
           className="cursor-pointer hover:text-gray-300"
           onClick={() => setModalVisible(true)}
@@ -30,7 +30,22 @@ export const Layout = () => {
           Ehdota tehtävää
         </button>
         <span>
-          <a href={author.url} rel="noopener noreferrer" target="_blank">
+          <a
+            href={repository.url}
+            rel="noopener noreferrer"
+            target="_blank"
+            className="hover:text-gray-300"
+          >
+            Lähdekoodi
+          </a>
+        </span>
+        <span>
+          <a
+            href={author.url}
+            rel="noopener noreferrer"
+            target="_blank"
+            className="hover:text-gray-300"
+          >
             &copy; {author.name} {new Date().getFullYear()}
           </a>
         </span>

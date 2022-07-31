@@ -6,6 +6,10 @@
     "email": "ville@vhx.fi",
     "url": "https://vhx.fi"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vhakli/juomapeli"
+  },
   "type": "module",
   "scripts": {
     "dev": "vite",
